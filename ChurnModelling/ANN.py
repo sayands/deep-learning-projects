@@ -44,17 +44,17 @@ from keras.layers import Dropout
 classifier = Sequential()
 
 # Adding the input layer and the hidden layer
-classifier.add(Dense(output_dim = 6,kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
-classifier.add(Dropout(rate = 0.1))
-classifier.add(Dense(output_dim = 6,kernel_initializer = 'uniform', activation = 'relu'))
-classifier.add(Dropout(rate = 0.1))
+classifier.add(Dense(units = 6,kernel_initializer = 'glorot_uniform', activation = 'relu', input_dim = 11))
+classifier.add(Dropout(rate = 0.12))
+classifier.add(Dense(units = 6,kernel_initializer = 'glorot_uniform', activation = 'relu'))
+classifier.add(Dropout(rate = 0.12))
 classifier.add(Dense(output_dim = 1,kernel_initializer = 'uniform', activation = 'sigmoid'))
 
 # Compiling the ANN
 classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 
 # Pitting the ANN to the training set
-classifier.fit(X_train, y_train, batch_size = 25, nb_epoch = 100)
+classifier.fit(X_train, y_train, batch_size = 25, epochs = 100)
 
 # Predicting the Test Set results
 y_pred = classifier.predict(X_test)
@@ -62,7 +62,7 @@ y_pred = (y_pred>0.5)
 
 # Making the confusion matrix
 from sklearn.metrics import confusion_matrix
-cm = confusion_matrix(y_test, pred)
+cm = confusion_matrix(y_test, y_pred)
 
 # EVALUATING,TUNING AND IMPROVING THE ANN
 
@@ -71,14 +71,16 @@ from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import cross_val_score
 def build_classifier():
     classifier = Sequential()
-    classifier.add(Dense(output_dim = 6,kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
-    classifier.add(Dense(output_dim = 6,kernel_initializer = 'uniform', activation = 'relu'))
-    classifier.add(Dense(output_dim = 1,kernel_initializer = 'uniform', activation = 'sigmoid'))
+    classifier.add(Dense(units = 6,kernel_initializer = 'glorot_uniform', activation = 'relu', input_dim = 11))
+    classifier.add(Dropout(rate = 0.12))
+    classifier.add(Dense(units = 6,kernel_initializer = 'glorot_uniform', activation = 'relu'))
+    classifier.add(Dropout(rate = 0.12))
+    classifier.add(Dense(output_dim = 1,kernel_initializer = 'glorot_uniform', activation = 'sigmoid'))
     classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
     return classifier
 
-classifier = KerasClassifier(build_fn = build_classifier, batch_size = 10, nb_epoch = 100)
-accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, cv = 10, n_jobs = -1)
+classifier = KerasClassifier(build_fn = build_classifier, batch_size = 25, epochs = 100)
+accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, cv = 10, n_jobs = 1)
 mean = accuracies.mean()
 variance = accuracies.std()
 
@@ -91,21 +93,20 @@ from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import GridSearchCV
 def build_classifier(optimizer):
     classifier = Sequential()
-    classifier.add(Dense(output_dim = 6,kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
-    classifier.add(Dropout(rate = 0.1))
-    classifier.add(Dense(output_dim = 6,kernel_initializer = 'uniform', activation = 'relu'))
-    classifier.add(Dropout(rate = 0.1))
-    classifier.add(Dense(output_dim = 1,kernel_initializer = 'uniform', activation = 'sigmoid'))
+    classifier.add(Dense(units = 6,kernel_initializer = 'glorot_uniform', activation = 'relu', input_dim = 11))
+    classifier.add(Dropout(rate = 0.12))
+    classifier.add(Dense(units = 6,kernel_initializer = 'glorot_uniform', activation = 'relu'))
+    classifier.add(Dropout(rate = 0.12))
+    classifier.add(Dense(output_dim = 1,kernel_initializer = 'glorot_uniform', activation = 'sigmoid'))
     classifier.compile(optimizer = optimizer, loss = 'binary_crossentropy', metrics = ['accuracy'])
     return classifier
 
 classifier = KerasClassifier(build_fn = build_classifier)
-parameters = { 'batch_size' : [10, 25, 32],
-                'nb_epoch'  : [100, 150, 200],
+parameters = { 'batch_size' : [10, 25],
+                'epochs'  : [100, 150],
                 'optimizer' : ['adam', 'rmsprop']}
 
-grid_search = GridSearchCV(classifier, param_grid = parameters, scoring = 'accuracy', cv = 10)
-grid_search = GridSearchCV()
+grid_search = GridSearchCV(estimator = classifier, param_grid = parameters, scoring = 'accuracy', cv = 10)
 gird_search = grid_search.fit(X_train, y_train)
 
 best_parameters = grid_search.best_params_
