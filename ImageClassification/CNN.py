@@ -63,3 +63,19 @@ classifier.fit_generator(
         epochs=25,
         validation_data = test_set,
         validation_steps=2000/32)
+
+# Making New Predictions
+import numpy as np
+from keras.preprocessing import image
+test_image = image.load_img('/my_data/dataset/single_prediction/cat_or_dog_2.jpg', target_size = (128, 128))
+test_image = image.img_to_array(test_image)
+test_image = np.expand_dims(test_image, axis = 0)
+result = classifier.predict(test_image)
+print(training_set.class_indices)
+if result[0][0] == 1:
+    prediction = 'dog'
+else:
+    prediction = 'cat'
+print(prediction)
+
+
