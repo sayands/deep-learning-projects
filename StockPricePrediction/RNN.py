@@ -31,8 +31,8 @@ training_set_scaled = sc.fit_transform(training_set)
 # Creating the data structure with 60 timestamps and 1 output
 X_train = []
 y_train = []
-for i in range(60, 1258):
-    X_train.append(training_set_scaled[i-60:i, 0:5])
+for i in range(120, 1258):
+    X_train.append(training_set_scaled[i-120:i, 0:5])
     y_train.append(training_set_scaled[i, 0])
 
 X_train, y_train = np.array(X_train), np.array(y_train)
@@ -50,19 +50,19 @@ from keras.layers import Dense, LSTM, Dropout
 regressor = Sequential()
 
 # Adding the first LSTM layer and Dropout Regularisation
-regressor.add(LSTM(units = 75, return_sequences = True, input_shape = (X_train.shape[1], 4)))
+regressor.add(LSTM(units = 50, return_sequences = True, input_shape = (X_train.shape[1], 4)))
 regressor.add(Dropout(rate = 0.2))
 
 # Adding the second LSTM layer and Dropout Regularisation
-regressor.add(LSTM(units = 75, return_sequences = True))
+regressor.add(LSTM(units = 50, return_sequences = True))
 regressor.add(Dropout(rate = 0.2))
 
 # Adding the third LSTM lasyer and Dropout Regularisation
-regressor.add(LSTM(units = 75, return_sequences = True))
+regressor.add(LSTM(units = 50, return_sequences = True))
 regressor.add(Dropout(rate = 0.2))
 
 # Adding the fourth LSTM layer and Dropout Regularisation
-regressor.add(LSTM(units = 75, return_sequences = False))
+regressor.add(LSTM(units = 50, return_sequences = False))
 regressor.add(Dropout(rate = 0.2))
 
 # Adding the output layer
@@ -71,7 +71,7 @@ regressor.add(Dense(units = 1, activation = 'sigmoid'))
 # Compiling the RNN
 import keras
 from keras import optimizers
-optimizer = optimizers.RMSprop(lr=0.001, rho=0.9, epsilon=None, decay=0.0)
+optimizer = optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
 regressor.compile(optimizer = optimizer , loss = 'mean_squared_error')
 
 # Fitting the RNN to the Training Set
@@ -86,13 +86,13 @@ real_stock_price = dataset_test.iloc[:, 1:2].values
 # Getting the predicted stock price of Jan 2017
 ds_test = dataset_test.iloc[:, 1:5]
 dataset_total = pd.concat((dataset_train, ds_test), axis = 0)
-inputs = dataset_total[len(dataset_total) - len(dataset_test) - 60 :].values
+inputs = dataset_total[len(dataset_total) - len(dataset_test) - 120 :].values
 #inputs = inputs.reshape(-1, 1)
 inputs = sc.transform(inputs)
 
 X_test = []
-for i in range(60, 80):
-    X_test.append(inputs[i-60:i, 0:5])
+for i in range(120, 140):
+    X_test.append(inputs[i-120:i, 0:5])
 X_test = np.array(X_test)
 #X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 4))
 predicted_stock_price = regressor.predict(X_test)
