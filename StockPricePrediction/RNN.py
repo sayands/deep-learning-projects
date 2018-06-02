@@ -50,19 +50,19 @@ from keras.layers import Dense, LSTM, Dropout
 regressor = Sequential()
 
 # Adding the first LSTM layer and Dropout Regularisation
-regressor.add(LSTM(units = 50, return_sequences = True, input_shape = (X_train.shape[1], 4)))
+regressor.add(LSTM(units = 100, return_sequences = True, input_shape = (X_train.shape[1], 4)))
 regressor.add(Dropout(rate = 0.2))
 
 # Adding the second LSTM layer and Dropout Regularisation
-regressor.add(LSTM(units = 50, return_sequences = True))
+regressor.add(LSTM(units = 100, return_sequences = True))
 regressor.add(Dropout(rate = 0.2))
 
 # Adding the third LSTM lasyer and Dropout Regularisation
-regressor.add(LSTM(units = 50, return_sequences = True))
+regressor.add(LSTM(units = 100, return_sequences = True))
 regressor.add(Dropout(rate = 0.2))
 
 # Adding the fourth LSTM layer and Dropout Regularisation
-regressor.add(LSTM(units = 50, return_sequences = False))
+regressor.add(LSTM(units = 100, return_sequences = False))
 regressor.add(Dropout(rate = 0.2))
 
 # Adding the output layer
@@ -75,7 +75,7 @@ optimizer = optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, de
 regressor.compile(optimizer = optimizer , loss = 'mean_squared_error')
 
 # Fitting the RNN to the Training Set
-regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)
+regressor.fit(X_train, y_train, epochs = 150, batch_size = 32)
 
 # Part 3 - Making the Predictions and Visualising Results
 
