@@ -75,7 +75,7 @@ optimizer = optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, de
 regressor.compile(optimizer = optimizer , loss = 'mean_squared_error')
 
 # Fitting the RNN to the Training Set
-regressor.fit(X_train, y_train, epochs = 150, batch_size = 32)
+regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)
 
 # Part 3 - Making the Predictions and Visualising Results
 
