@@ -2,3 +2,5 @@ BoltzmannMachine/ml-100k
 BoltzmannMachine/ml-1m
 AutoEncoders/ml-1m
 AutoEncoders/ml-100k
+Kaggle-MNIST/test.csv
+Kaggle-MNIST/train.csv
