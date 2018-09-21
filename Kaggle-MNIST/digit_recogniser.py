@@ -9,7 +9,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from keras.utils.np_utils import to_categorical
 import time 
 
-start_time = time()
+start_time = time.time()
 
 # loading the data
 train = pd.read_csv('train.csv')
@@ -25,38 +25,29 @@ del train
 X = X / 255.0
 X = X.values.reshape(-1, 28, 28, 1)
 
-# Shuffle Split Train and Test from Original Dataset
-seed = 2
-train_index, valid_index = ShuffleSplit(n_splits = 1, 
-                                        train_size = 0.9,
-                                        test_size = None,
-                                        random_state = seed).split(X).__next__()
-
-x_train = X[train_index]
-Y_train = y[train_index]
-x_test = X[valid_index]
-Y_test = y[valid_index]
+# Train Test Split
+random_seed = 2
+from sklearn.model_selection import train_test_split
+X_train, X_val, Y_train, Y_val = train_test_split(X, y, test_size = 0.1, random_state=random_seed)
 
 # Parameters
-epochs = 10
-batch_size = 64
-validation_steps = 10000
+epochs = 30
+batch_size = 86
 
 # Initialize Model, Annealer and Datagen
 model, annealer, datagen = md.init_model()
 
 # Start training
-train_generator = datagen.flow(x_train, Y_train, batch_size = batch_size)
-test_generator = datagen.flow(x_test, Y_test, batch_size = batch_size)
+datagen.fit(X_train)
 
-history = model.fit_generator(train_generator, 
-                        steps_per_epoch = x_train.shape[0] // batch_size,
-                        epochs = epochs,
-                        validation_data = test_generator,
-                        validation_steps = validation_steps // batch_size,
-                        callbacks = [annealer])
+# Fit the model
+history = model.fit_generator(datagen.flow(X_train,Y_train, batch_size=batch_size),
+                              epochs = epochs, validation_data = (X_val,Y_val),
+                              steps_per_epoch=X_train.shape[0] // batch_size
+                              , callbacks=[annealer])
 
-score = model.evaluate(x_test, Y_test)
+
+score = model.evaluate(X_val, Y_val)
 print("Test Accuracy: ", score[1])
 
 # Saving model for future reference
@@ -81,4 +72,26 @@ plt.xlabel('Epoch')
 plt.legend(['train', 'test'], loc = 'upper right')
 plt.show()
 
+# Model Predicition
+test = pd.read_csv('test.csv')
+print(test.shape)
+test = test / 255
+test = test.values.reshape(-1, 28, 28, 1)
+p = np.argmax(model.predict(test), axis = 1)
 
+# Base Model Scores
+print('Base Model Scores')
+valid_loss, valid_acc = model.evaluate(X_val, Y_val, verbose = 0)
+valid_p = np.argmax(model.predict(X_val), axis = 1)
+target = np.argmax(Y_val, axis = 1)
+cm = confusion_matrix(target, valid_p)
+print(cm)
+
+# Preparing for submission
+submission = pd.DataFrame(pd.Series(range(1, p.shape[0] + 1), name = 'ImageId'))
+submission['label'] = p
+filename = 'keras-cnn-{0}.csv'.format(str(int(score[1] * 10000)))
+submission.to_csv(filename, index = False)
+
+elapsed_time = time.time() - start_time
+print("Elapsed time: {0}".format(time.strftime("%H:%M:%S", time.gmtime(elapsed_time))))
