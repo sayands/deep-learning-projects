@@ -4,3 +4,7 @@ AutoEncoders/ml-1m
 AutoEncoders/ml-100k
 Kaggle-MNIST/test.csv
 Kaggle-MNIST/train.csv
+Kaggle-MNIST/Digits-1.3.0.h5
+Kaggle-MNIST/keras-cnn-9954.csv
+Kaggle-MNIST/keras-cnn-9957.csv
+Kaggle-MNIST/keras-cnn-9959.csv
