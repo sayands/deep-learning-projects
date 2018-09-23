@@ -7,7 +7,7 @@ from imutils import paths
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.model_selection import train_test_split
 from keras.models import Sequential
-from keras.layers.convolutional import Conv2d, MaxPooling2D
+from keras.layers.convolutional import Conv2D, MaxPooling2D
 from keras.layers.core import Flatten, Dense
 from helpers import resize_to_fit
 
@@ -54,3 +54,30 @@ y_test = lb.transform(y_test)
 # Save the mapping from labels to one-hot encodings
 with open(MODEL_LABELS_FILENAME, "wb") as f:
     pickle.dump(lb, f)
+
+# Building the Model Architecture
+model = Sequential()
+
+# 1st CONV LAYER with MAXPOOL
+model.add(Conv2D(20, (5, 5), padding = "same", input_shape = (20, 20, 1), activation = "relu"))
+model.add(MaxPooling2D(pool_size = (2, 2), strides = (2, 2)))
+
+# 2nd CONV LAYER with MAXPOOL
+model.add(Conv2D(50, (5, 5), padding = 'same', activation = 'relu'))
+model.add(MaxPooling2D(pool_size = (2, 2), strides = (2, 2)))
+
+# Hidden layer with 500 nodes
+model.add(Flatten())
+model.add(Dense(500, activation = 'relu'))
+
+# Output Layer
+model.add(Dense(32, activation = 'softmax'))
+
+# Compile Model
+model.compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = ['accuracy'])
+
+# Train the network
+model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=32, epochs = 1, verbose = 1)
+
+# Save the trained model to disk
+model.save(MODEL_FILENAME)
