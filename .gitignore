@@ -9,3 +9,6 @@ Kaggle-MNIST/keras-cnn-9954.csv
 Kaggle-MNIST/keras-cnn-9957.csv
 Kaggle-MNIST/keras-cnn-9959.csv
 Captcha-Breaker-CNN/generated_captcha_images
+Captcha-Breaker-CNN/extracted_letter_images
+Captcha-Breaker-CNN/captcha_model.hdf5
+Captcha-Breaker-CNN/model_labels.dat
