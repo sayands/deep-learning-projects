@@ -44,7 +44,7 @@ data = np.array(data, dtype="float") / 255.0
 labels = np.array(labels)
 
 # Split the training data into training and testing tests
-(X_train, X_test, y_train, y_test) = train_test_split(data, labels, test_size = 0.5, random_state = 0)
+(X_train, X_test, y_train, y_test) = train_test_split(data, labels, test_size = 0.25, random_state = 0)
 
 # Convert the labels into one-hot encodings
 lb = LabelBinarizer().fit(y_train)
@@ -77,7 +77,7 @@ model.add(Dense(32, activation = 'softmax'))
 model.compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = ['accuracy'])
 
 # Train the network
-model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=32, epochs = 1, verbose = 1)
+model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=32, epochs = 10, verbose = 1)
 
 # Save the trained model to disk
 model.save(MODEL_FILENAME)
