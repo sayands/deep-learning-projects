@@ -10,8 +10,8 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
 # Reading the data
-train_df = pd.read_csv('/content/drive/My Drive/app/Fashion-MNIST/fashion-mnist_train.csv')
-test_df = pd.read_csv('/content/drive/My Drive/app/Fashion-MNIST/fashion-mnist_test.csv')
+train_df = pd.read_csv('data/fashion-mnist_train.csv')
+test_df = pd.read_csv('data/fashion-mnist_test.csv')
 print(train_df.head())
 
 # Splitting the training and test data into X(image) and Y(label) arrays
@@ -77,4 +77,18 @@ model.compile(loss = 'sparse_categorical_crossentropy', optimizer = 'adam', metr
 history = model.fit(X_train, y_train, batch_size = batch_size, epochs = epochs, verbose = 1, validation_data = (X_val, y_val))
 
 
+# Finding model performance on test set
+print(model.evaluate(X_test, y_test))
+
+# Summarizing history for accuracy
+plt.plot(history.history['acc'])
+plt.plot(history.history['val_acc'])
+plt.title('Model Accuracy')
+plt.ylabel('Acccuracy')
+plt.xlabel('Epoch')
+plt.legend(['train', 'val'])
+#plt.show()
+
+# Saving the accuracy plot
+plt.savefig('Accuracy.png')
 
