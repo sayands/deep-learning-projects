@@ -12,3 +12,4 @@ Captcha-Breaker-CNN/generated_captcha_images
 Captcha-Breaker-CNN/extracted_letter_images
 Captcha-Breaker-CNN/captcha_model.hdf5
 Captcha-Breaker-CNN/model_labels.dat
+Fashion-MNIST/data
