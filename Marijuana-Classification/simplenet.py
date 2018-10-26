@@ -41,5 +41,7 @@ class SimpleNet:
         model.add(Activation('relu'))
         model.add(Dropout(0.5))
 
+        model.add(Dense(classes))
+        model.add(Activation('softmax'))
         # return the constructed network architecture
         return model 
