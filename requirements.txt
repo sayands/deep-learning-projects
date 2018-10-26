@@ -30,7 +30,7 @@ h5py==2.8.0
 html5lib==1.0.1
 idna==2.7
 imagesize==1.0.0
-imutils==0.5.0
+imutils==0.5.1
 ipykernel==4.8.2
 ipython==6.5.0
 ipython-genutils==0.2.0
