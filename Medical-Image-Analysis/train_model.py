@@ -79,3 +79,45 @@ testGen = valAug.flow_from_directory(
     color_mode = "rgb",
     shuffle = False,
     batch_size = BS)
+
+# initialise our ResNet model and compile it
+model = ResNet.build(64, 64, 3, 2, (3, 4, 6), (64, 128, 256, 512), reg = 0.0005)
+opt = SGD(lr = INIT_LR, momentum = 0.9)
+model.compile(loss = "binary_crossentropy", optimizer = opt, metrics = ["accuracy"])
+
+# define our set of callbacks and fit the model
+callbacks = [LearningRateScheduler(poly_decay)]
+
+H = model.fit_generator(
+    trainGen,
+    steps_per_epoch = totalTrain // BS,
+    validation_data = valGen,
+    validation_steps = totalVal // BS,
+    epochs = NUM_EPOCHS,
+    callbacks = callbacks)
+
+# reset the testing generator and use the trained model to
+# make predictions on the data
+print("[INFO] Evaluating network...")
+testGen.reset()
+predIdxs = model.predict_generator(testGen, steps = (totalTest // BS) + 1)
+
+# find index of label with corresponding largest predicted probability
+predIdxs = np.argmax(predIdxs, axis = 1)
+
+# show a nicely formatted classification report
+print(classification_report(testGen.classes, predIdxs, target_names = testGen.class_indices.keys()))
+
+# Plot the training loss and accuracy 
+N = NUM_EPOCHS
+plt.style.use("ggplot")
+plt.figure()
+plt.plot(np.arange(0, N), H.history["loss"], label = "train_loss")
+plt.plot(np.arange(0, N), H.history["val_loss"], label = "val_loss")
+plt.plot(np.arange(0, N), H.history["acc"], label = "train_acc")
+plt.plot(np.arange(0, N), H.history["val_acc"], label = "val_acc")
+plt.title("Training Loss and Accuracy on Dataset")
+plt.xlabel("Epoch #")
+plt.ylabel("Loss/Accuracy")
+plt.legend(loc = "lower left")
+plt.savefig(args["plot"])
