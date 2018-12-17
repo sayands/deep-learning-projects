@@ -15,5 +15,5 @@ Captcha-Breaker-CNN/captcha_model.hdf5
 Captcha-Breaker-CNN/model_labels.dat
 Fashion-MNIST/data
 Marijuana-Classification/dataset
-Medical-Image-Analysis/malaria/cell_images
+Medical-Image-Analysis/malaria
 Medical-Image-Analysis/utils/resnet.py

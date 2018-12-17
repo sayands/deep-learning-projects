@@ -2,7 +2,7 @@
 import os
 
 # initialise the path to the original input directory of image
-ORIG_INPUT_DATASET = 'cell_images'
+ORIG_INPUT_DATASET = 'malaria/cell_images'
 
 # initialise the base path to the new directory
 BASE_PATH = 'malaria'
