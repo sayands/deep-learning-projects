@@ -3,7 +3,8 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Flatten, Reshape 
 from keras.layers.convolutional import Conv2D, MaxPooling2D
 from keras.utils import np_utils 
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
+from sklearn.metrics import roc_auc_score 
 
 # Load the data
 X = np.load('X.npy')
@@ -37,7 +38,11 @@ model.add(Conv2D(nb_filters, (nb_conv, nb_conv), activation = 'relu', input_shap
 model.add(Conv2D(nb_filters, (nb_conv, nb_conv), activation = 'relu'))
 model.add(MaxPooling2D(pool_size = (nb_pool, nb_pool)))
 model.add(Dropout(0.25))
+model.add(Conv2D(nb_filters, (nb_conv, nb_conv), activation = 'relu'))
+model.add(Conv2D(nb_filters, (nb_conv, nb_conv), activation = 'relu'))
+model.add(MaxPooling2D(pool_size = (nb_pool, nb_pool)))
 model.add(Flatten())
+model.add(Dropout(0.25))
 model.add(Dense(128, activation = 'relu'))
 model.add(Dropout(0.5))
 model.add(Dense(nb_classes, activation = 'softmax'))
@@ -47,8 +52,20 @@ model.summary()
 
 # Training the model
 validation_split = 0.10
-model.fit(X, y, batch_size = 128, class_weight = class_weight, epochs = 20, verbose = 1, validation_split = validation_split)
+model.fit(X, y, batch_size = 64, class_weight = class_weight, epochs = 15, verbose = 1, validation_split = validation_split)
 
 open('model.json', 'w').write(model.to_json())
 model.save_weights('weights.h5')
 
+# Visualising the loss and accuracy plots
+plt.plot(model.model.history.history['loss']) 
+plt.plot(model.model.history.history['acc'])
+plt.plot(model.model.history.history['val_loss'])
+plt.plot(model.model.history.history['val_acc'])
+plt.show()
+
+# Find the ROC score of the model
+n_validation = int(len(X) * validation_split)
+y_predicted = model.predict(X[-n_validation:])
+
+print("[INFO] ROC AUC SCORE - {}".format(roc_auc_score(y[-n_validation:], y_predicted)))

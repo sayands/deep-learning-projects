@@ -24,4 +24,5 @@ SMILE-CNN/dataset
 SMILE-CNN/*.png
 SMILE-CNN/*.npy
 *.pyc
-
+SMILE-CNN/*.json
+SMILE-CNN/*.h5
