@@ -51,5 +51,5 @@ show_array(a = 255 * make_mosaic(X[-len(positive_paths):], 8), format='png', fil
 X = np.expand_dims(X, axis = -1)
 np.save('X.npy', X)
 np.save('y.npy', y)
-print("[INFO}Shape of X after expanding dimensions - {}", X.shape)
+print("[INFO}Shape of X after expanding dimensions - {}".format(X.shape))
 
