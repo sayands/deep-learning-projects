@@ -21,3 +21,7 @@ Simple-Image-Classifier/animals
 Simple-Image-Classifier/images
 Simple-Image-Classifier/output
 SMILE-CNN/dataset
+SMILE-CNN/*.png
+SMILE-CNN/*.npy
+*.pyc
+
