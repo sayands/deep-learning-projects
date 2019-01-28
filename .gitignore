@@ -26,3 +26,4 @@ SMILE-CNN/*.npy
 *.pyc
 SMILE-CNN/*.json
 SMILE-CNN/*.h5
+House-Price-Prediction/Houses-Dataset
