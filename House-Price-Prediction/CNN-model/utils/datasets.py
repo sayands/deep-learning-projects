@@ -58,5 +58,3 @@ def load_house_images(df, inputPath):
             images.append(outputImage)
 
     return np.array(images)
-
-
