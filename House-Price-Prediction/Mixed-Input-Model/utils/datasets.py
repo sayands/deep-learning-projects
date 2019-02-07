@@ -10,12 +10,12 @@ import os
 def load_house_attributes(inputPath):
     # Initialise the list of column names in the CSV file and load using pandas
     cols = ["bedrooms", "bathrooms", "area", "zipcode", "price"]
-    df = pd.read_csv(inputPath, sep = " ", header = None, name = cols)
+    df = pd.read_csv(inputPath, sep = " ", header = None, names = cols)
 
     # determine the unique zip codes and no.of data points
     # with each zip code
     zipcodes = df["zipcode"].value_counts().keys().tolist()
-    counts = df["zipcode"].value_counts().keys().tolist()
+    counts = df["zipcode"].value_counts().tolist()
 
     # loop over each of unique zip codes and their corresponding count
     for (zipcode, count) in zip(zipcodes, counts):

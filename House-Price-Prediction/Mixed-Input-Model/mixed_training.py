@@ -11,6 +11,7 @@ import argparse
 import locale 
 import os 
 
+
 # Construct the argument parser and parse the arguments 
 ap = argparse.ArgumentParser()
 ap.add_argument("-d", "--dataset", type = str, required = True, help = 'Path to input dataset of house images')
@@ -55,7 +56,7 @@ x = Dense(1, activation = "linear")(x)
 model = Model(inputs=[mlp.input, cnn.input], outputs = x)
 
 opt = Adam(lr = 1e-3, decay = 1e-3 / 200)
-model.compile(loss = "mean_absolute_percentage_error", optimizer = opt)
+model.compile(loss = "mean_absolute_percentage_error", optimizer = 'rmsprop')
 
 # train the model 
 print("[INFO] Training model...")
@@ -76,7 +77,7 @@ mean = np.mean(absPercentDiff)
 std = np.std(absPercentDiff)
 
 # Show some statistics on the model 
-locale.setlocale(locale.LC_ALL, "en-UTF-8")
+locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
 print("[INFO] Avg. House Price: {}, Std House Price: {}".format(
     locale.currency(df["price"].mean(), grouping = True),
     locale.currency(df["price"].std(), grouping = True)))

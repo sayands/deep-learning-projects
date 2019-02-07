@@ -2,7 +2,7 @@
 from keras.models import Sequential
 from keras.layers.normalization import BatchNormalization
 from keras.layers.convolutional import Conv2D
-from keras.layers.convolutional import MaxPolling2D
+from keras.layers.convolutional import MaxPooling2D
 from keras.layers.core import Activation
 from keras.layers.core import Dropout
 from keras.layers.core import Dense 
@@ -40,7 +40,7 @@ def create_cnn(width, height, depth, filters=(16, 32, 64), regress = False):
         x = Conv2D(f, (3, 3), padding = "same")(x)
         x = Activation("relu")(x)
         x = BatchNormalization(axis = chanDim)(x)
-        x = MaxPolling2D(pool_size = (2, 2))(x)
+        x = MaxPooling2D(pool_size = (2, 2))(x)
 
     # Flatten the volume, FC=>RELU=>BN=>DROPOUT
     x = Flatten()(x)
