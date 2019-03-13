@@ -27,3 +27,6 @@ SMILE-CNN/*.npy
 SMILE-CNN/*.json
 SMILE-CNN/*.h5
 House-Price-Prediction/Houses-Dataset
+Liveness-Detection/dataset
+Liveness-Detection/face_detector
+Liveness-Detection/videos
