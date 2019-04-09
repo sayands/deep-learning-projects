@@ -32,3 +32,5 @@ Liveness-Detection/face_detector
 Liveness-Detection/videos
 Liveness-Detection/le.pickle
 Liveness-Detection/liveness.model
+Reconstrucing-Fingerprint-Images/data
+Reconstrucing-Fingerprint-Images/model
