@@ -82,7 +82,7 @@ PyQt5==5.9.2
 python-dateutil==2.7.3
 pytz==2018.4
 PyWavelets==0.5.2
-PyYAML==3.13
+PyYAML==5.4
 pyzbar==0.1.7
 pyzmq==17.1.2
 QtAwesome==0.4.4
