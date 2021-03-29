@@ -75,7 +75,7 @@ pycparser==2.18
 pydicom==1.2.2
 pydot==1.4.1
 pyflakes==2.0.0
-Pygments==2.2.0
+Pygments==2.7.4
 pylint==2.1.1
 pyparsing==2.2.0
 PyQt5==5.9.2
