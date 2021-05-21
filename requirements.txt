@@ -104,7 +104,7 @@ sphinxcontrib-websupport==1.1.0
 spyder==3.3.1
 spyder-kernels==0.2.6
 tensorboard==1.10.0
-tensorflow==1.10.0
+tensorflow==2.5.0
 termcolor==1.1.0
 testpath==0.3.1
 Theano==1.0.2
