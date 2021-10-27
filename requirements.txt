@@ -17,7 +17,7 @@ cloudpickle==0.5.3
 configparser==3.5.0
 cryptography==2.3
 cycler==0.10.0
-dask==0.17.5
+dask==2021.10.0
 decorator==4.3.0
 dlib==19.13.1
 docutils==0.14
